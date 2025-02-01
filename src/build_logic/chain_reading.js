@@ -297,7 +297,7 @@ export async function fetch_chaindata(shows) {
     // API key things
     const apiKey = process.env.ALCHEMY_API_KEY;
 
-    if (apiKey === undefined) {
+    if (apiKey === undefined || apiKey === "") {
         throw new Error("Not seeing API keys in .env - ask Justin or somebody for the secrets file.");
     }
 
