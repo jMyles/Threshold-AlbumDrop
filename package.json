@@ -3,7 +3,6 @@
   "version": "2.0.0",
   "description": "Tools for timestamping, archiving, and producing onchain merch for bluegrass and trad music.",
   "scripts": {
-    "get-time-data": "node src/build_logic/get_time_data.js",
     "download-videos": "node src/build_logic/download_videos.js",
     "build": "webpack --config src/build_logic/webpack.prod.js",
     "dev:jh": "SKIP_CHAIN_DATA=true NODE_ENV=development webpack serve --config src/build_logic/webpack.justinholmes.dev.js",
@@ -40,7 +39,7 @@
     "@wagmi/connectors": "^5.3.3",
     "@wagmi/core": "^2.7.0",
     "@web3modal/wagmi": "^4.1.11",
-    "canvas": "^2.11.2",
+    "canvas": "^3.1.0",
     "chart.js": "^4.4.4",
     "cli-progress": "^3.12.0",
     "color": "^4.2.3",

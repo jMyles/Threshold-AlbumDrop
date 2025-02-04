@@ -22,9 +22,21 @@
         },
         {
             "type": "node",
-            "name": "Build All",
+            "name": "Build justinholmes.com",
             "runtimeExecutable": "npm",
-            "runtimeArgs": ["run", "build"]
+            "runtimeArgs": ["run", "build"],
+            "env": {
+                "SITE": "justinholmes.com"
+            }
+        },
+        {
+            "type": "node",
+            "name": "Build cryptograss.live",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run", "build"],
+            "env": {
+                "SITE": "cryptograss.live"
+            }
         },
         {
             "type": "node",
@@ -63,12 +75,6 @@
             "name": "Download Videos",
             "runtimeExecutable": "npm",
             "runtimeArgs": ["run", "download-videos"]
-        },
-        {
-            "type": "node",
-            "name": "Get Time Data",
-            "runtimeExecutable": "npm",
-            "runtimeArgs": ["run", "get-time-data"]
         },
         {
             "type": "node",

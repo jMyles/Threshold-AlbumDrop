@@ -1,10 +1,17 @@
 import { fileURLToPath } from "url";
 import path from "path";
 
-let projectDirs = {
-    initialized: false,
-    site: null
-};
+const projectDirs = new Proxy({}, {
+    get: function (target, prop) {
+        if (!(prop in target)) {
+            throw new Error(`KeyError: '${prop}' is not defined`);
+        }
+        return target[prop];
+    }
+});
+
+projectDirs.initialized = false;
+projectDirs.site = null;
 
 export function initProjectDirs(site_name) {
     // Prevent multiple initializations
@@ -32,7 +39,8 @@ export function initProjectDirs(site_name) {
     // Output directories
     projectDirs.outputBaseDir = path.resolve(projectDirs.projectRootDir, 'output');
 
-    projectDirs.outputDistDir = path.resolve(projectDirs.outputBaseDir, site_name + '.dist');
+    projectDirs.outputDistDir = path.resolve(projectDirs.outputBaseDir,
+        'dist', site_name);
 
     projectDirs.outputPrimaryRootDir = path.resolve(projectDirs.outputBaseDir, '_prebuild_output');
 
@@ -47,8 +55,21 @@ export function initProjectDirs(site_name) {
         ? 'http://localhost:4050'
         : 'https://cryptograss.live';
 
+    projectDirs.basePath = getBasePath(site_name);
+
     return projectDirs;
 }
+
+const getBasePath = (site_name) => {
+    // For preview builds, use the commit SHA as the base path
+    if (process.env.PREVIEW_BUILD === 'true' && process.env.COMMIT_SHA) {
+        console.log(`Base path (preview for ${site_name}): `, `/build-previews/${process.env.COMMIT_SHA}/${site_name}`);
+        return `/build-previews/${process.env.COMMIT_SHA}/${site_name}`;
+    }
+    // For production builds, use root
+    console.log("Base path (non-preview): ", `/`);
+    return '';
+};
 
 export function getProjectDirs() {
     if (!projectDirs.initialized) {

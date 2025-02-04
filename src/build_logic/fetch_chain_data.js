@@ -1,14 +1,26 @@
 import fs from 'fs';
-import path from 'path';
 import ora from 'ora';
 import { getProjectDirs, initProjectDirs } from './locations.js';
-import { fetch_chaindata } from './chain_reading.js';
+import { fetch_chaindata, get_times_for_shows } from './chain_reading.js';
 import { getShowAndSetData } from './show_and_set_data.js';
 import { serializeChainData } from './chaindata_db.js';
 import { fileURLToPath } from 'url';
+import path from 'path';
+import { stringify } from "./utils.js";
+
 
 async function updateChainData() {
-    const { chainDataDir } = getProjectDirs();
+    const { dataDir, chainDataDir, showsDir } = getProjectDirs();
+
+    const time_data_json_path = path.resolve(dataDir, 'time_data.json');
+    const times_for_shows = await get_times_for_shows();
+    const times_for_shows_json = stringify(times_for_shows);
+
+    fs.writeFileSync(time_data_json_path, times_for_shows_json);
+
+    console.log("Wrote time data to " + time_data_json_path);
+
+
     let spinner_text;
     try {
         // Ensure chain data directory exists

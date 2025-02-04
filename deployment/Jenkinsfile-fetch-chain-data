@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+    
+    environment {
+        NODE_VERSION = '23.6.1'
+        NVM_DIR = '/var/jenkins_home/.nvm'
+        SHARED_DATA_DIR = '/var/jenkins_home/shared'
+        CHAIN_DATA_DIR = "${SHARED_DATA_DIR}/chain_data"
+    }
+    
+    stages {
+        stage('Setup') {
+            steps {
+                sh '''
+                    mkdir -p ${CHAIN_DATA_DIR}
+                    export NVM_DIR="$NVM_DIR"
+                    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" --no-use > /dev/null
+                    nvm use ${NODE_VERSION} > /dev/null
+                    nvm use ${NODE_VERSION}
+                    npm install
+                '''
+            }
+        }
+        
+        stage('Fetch Chain Data') {
+            steps {
+                sh '''
+                    export NVM_DIR="$NVM_DIR"
+                    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" --no-use > /dev/null
+                    nvm use ${NODE_VERSION} > /dev/null
+                    CHAIN_DATA_OUTPUT_DIR=${CHAIN_DATA_DIR} npm run fetch-chain-data
+
+                    # Copy the data to shared location
+                    cp -r output/_prebuild_chain_data/* ${CHAIN_DATA_DIR}/
+                '''
+            }
+        }
+    }
+    
+    post {
+        success {
+            // Touch a file to indicate successful completion
+            sh "touch ${CHAIN_DATA_DIR}/.last_fetch_success"
+        }
+    }
+}

@@ -2,6 +2,8 @@ index:
   template: index.njk
   context:
     page_title: "Future-proofing Bluegrass"
+  include_data_in_context:
+    - latest_git_commit
 
 listen:
   template: listen.njk

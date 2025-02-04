@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-4"></div>
         <div class="col-md-4">
-            <a href="/kuba">
+            <a href="{{ basePath }}/kuba">
                 <img class="img-fluid align-content-center" src="{{ get_image("kuba-web3summit.jpg") }}"
                      class="img-fluid" alt="Kuba at web3summit in Berlin"/>
             </a>
@@ -14,14 +14,36 @@
         <div class="col-3">
         </div>
         <div class="col-md-6 text-white text-center">
-            <a href="/kuba">
+            <a href="{{ basePath }}/kuba">
                 <h1 class="pixel-font">Jakub "Kuba" Hejhal</h1>
             </a>
             <h1 class="pixel-font">1997-2024</h1>
             <h1 class="curly">mír a vytrvalost</h1>
-            <h2><a href="/pickers/kuba-hejhal">Setlists for Kuba's 12 shows</a></h2>
+            <h2><a href="{{ basePath }}/pickers/kuba-hejhal">Setlists for Kuba's 12 shows</a></h2>
             <h3><a href="https://github.com/JustinHolmesMusic/justinholmes.com/commits/main/?author=kubic71">Kuba's
                 commits to this project</a></h3>
             <small>(Photograph by R.J. Partington III)</small>
         </div>
+
+    <div id="page-build-metadata">
+        Page build metadata:<br/>
+        <ul>
+            <li>
+                Build on ref:
+                {{ latest_git_commit }}
+            </li>
+            <li>
+                Mainnet block height
+                {{ chainData.mainnetBlockNumber }}
+            </li>
+            <li>
+                Optimism block height
+                {{ chainData.optimismBlockNumber }}
+            </li>
+            <li>
+                Optimism Sepolia block height
+                {{ chainData.optimismSepoliaBlockNumber }}
+            </li>
+        </ul>
+    </div>
 {% endblock %}

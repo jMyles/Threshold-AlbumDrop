@@ -1,0 +1,54 @@
+jenkins:
+  systemMessage: "Cryptograss Project Builder"
+  numExecutors: 3
+  scmCheckoutRetryCount: 2
+  mode: NORMAL
+  
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: admin
+          password: ${JENKINS_ADMIN_PASSWORD}
+
+  authorizationStrategy:
+    globalMatrix:
+      entries:
+      - userOrGroup:
+          name: "admin"
+          permissions:
+          - "Overall/Administer"
+      - user:
+          name: "anonymous"
+          permissions:
+          - "Job/Read"
+          - "Overall/Read"
+
+jobs:
+  - file: /var/jenkins_home/jobs/production.groovy
+  - file: /var/jenkins_home/jobs/pull-requests.groovy
+  - file: /var/jenkins_home/jobs/fetch-chain-data.groovy
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - usernamePassword:
+              scope: GLOBAL
+              id: "github-token"
+              username: "jmyles"
+              password: "${GITHUB_TOKEN}"
+              description: "GitHub Token"
+          - basicSSHUserPrivateKey:
+              scope: GLOBAL
+              id: "jenkins-ssh-key"
+              username: "jenkins"
+              privateKeySource:
+                directEntry:
+                  privateKey: ${JENKINS_SSH_KEY}
+              description: "SSH key for rsync deployments"
+
+unclassified:
+  location:
+    adminAddress: "admin@cryptograss.live"
+    url: "https://maybelle.cryptograss.live/"
